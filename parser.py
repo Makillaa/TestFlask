@@ -8,8 +8,8 @@ cur = con.cursor()
 
 with open('test_results.csv', 'r') as fin:
     dr = csv.DictReader(fin)
-    for i in dr:
-        to_db = [(i['Device type'], i['Operator'], i['Time'], i['Success']) for i in dr]
+    to_db = [(i['Device type'], i['Operator'], i['Time'], i['Success']) for i in dr]
+
 
 cur.executemany("INSERT INTO results_model (type, operator, datetime, result) VALUES (?, ?, ?, ?);", to_db)
 con.commit()

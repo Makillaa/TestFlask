@@ -14,7 +14,7 @@ records_post_args.add_argument('result')
 
 def abort_if_record_id_doesnt_exist(record_id):
     if not ResultsModel.query.filter_by(id=record_id).first():
-        abort(409, message="Could not find record")
+        abort(404, message="Could not find record")
 
 
 def statistic(result):
@@ -60,13 +60,12 @@ class ResultAdd(Resource):
 class ResultDel(Resource):
     def delete(self, record_id):
         abort_if_record_id_doesnt_exist(record_id)
-        # record = ResultsModel.query.filter_by(id=record_id).first()
         record = ResultsModel.query.get(record_id)
         db.session.delete(record)
         db.session.commit()
         return {"message": f'Record {record_id} is successfully deleted'}, 200
 
 
-api.add_resource(Result, "/api_v1/stat/")  # отримання статистики з опціональним фільтром
-api.add_resource(ResultAdd, "/api_v1/test_result")  # додавання нового результату тесту в БД
-api.add_resource(ResultDel, "/api_v1/test_result/<int:record_id>")  # видалення запису по id
+api.add_resource(Result, "/api_v1/stat/")
+api.add_resource(ResultAdd, "/api_v1/test_result")
+api.add_resource(ResultDel, "/api_v1/test_result/<int:record_id>")
